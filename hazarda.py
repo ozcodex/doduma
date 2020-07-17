@@ -35,9 +35,10 @@ if digits > 1:
     # the rest of digits
     for p in pows:
         dig = choice(numbers)
-        #if is first loop and dig is 0 get new dig
         result += dig
-        name += names[dig]+p
+        #if is 0 skip it
+        if not dig == '0':
+            name += names[dig]+p
 
 print ("digits: ", digits)
 print ("number: ", result)
