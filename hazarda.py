@@ -19,16 +19,18 @@ names = {
 
 #random num generation
 
-max_digits = 4
+max_digits = 6
 digits = randrange(max_digits) + 1
 
-pows = ['','dod ', 'groc ', 'taŭs '][:digits]
+pows = ['','dod ', 'groc ', 'taŭs ', 'dod ', 'groc '][:digits]
 pows.reverse()
 
 # choose a first digit different from 0
 dig = choice(numbers[-11:])
 result = dig
-name = names[dig]
+name = ''
+if not (dig == '1' and digits > 1):
+    name += names[dig]
 if digits > 1:
     name += pows.pop(0)
 
@@ -39,6 +41,8 @@ if digits > 1:
         #if is 0 skip it
         if not dig == '0':
             name += names[dig]+p
+        elif p == 'taŭs ':
+            name += p
 
 print ("digits: ", digits)
 print ("number: ", result)
