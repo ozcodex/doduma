@@ -17,33 +17,47 @@ names = {
         'E':'elv'
         }
 
-#random num generation
+def getPows(digits):
+    pows = ['','dod ', 'groc ', 'taŭs ', 'dod ', 'groc '][:digits]
+    pows.reverse()
+    return pows
 
-max_digits = 6
-digits = randrange(max_digits) + 1
 
-pows = ['','dod ', 'groc ', 'taŭs ', 'dod ', 'groc '][:digits]
-pows.reverse()
+def toText(number):
+    parts = list(number)
+    digits =len(parts)
+    pows = getPows(digits)
+    name = ''
+    #process first digit
+    dig = parts.pop(0)
+    if not (dig == '1' and digits > 1):
+        name += names[dig]
+    if digits > 1:
+        name += pows.pop(0)
+    for dig in parts:
+        p = pows.pop(0)
+        #if is 0 or 1 skip it
+        if not (dig == '0' or dig == '1'):
+            name += names[dig]+p
+        elif p == 'taŭs ' or (dig == '1' and not p == ''):
+            name += p
+            
+    return name
 
-# choose a first digit different from 0
-dig = choice(numbers[-11:])
-result = dig
-name = ''
-if not (dig == '1' and digits > 1):
-    name += names[dig]
-if digits > 1:
-    name += pows.pop(0)
-
+def getRandom():
+    #random num generation
+    max_digits = 6
+    digits = randrange(max_digits) + 1
+    # choose a first digit different from 0
+    dig = choice(numbers[-11:])
+    result = dig
     # the rest of digits
-    for p in pows:
+    for p in range(digits - 1):
         dig = choice(numbers)
         result += dig
-        #if is 0 skip it
-        if not dig == '0':
-            name += names[dig]+p
-        elif p == 'taŭs ':
-            name += p
+    return result
 
-print ("digits: ", digits)
-print ("number: ", result)
+num = getRandom()
+name = toText(num) 
+print ("number: ", num)
 print ("text: ", name)
