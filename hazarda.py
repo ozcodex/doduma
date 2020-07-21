@@ -19,6 +19,7 @@ names = {
 
 pows = ['dod','groc','taŭs']
 
+
 def d3toText(number):
     print("converting",number)
     #create text string for 3 digit number
@@ -75,6 +76,19 @@ def toText(number):
             text += " "
         pw -= 1
     return text
+
+def add(a,b):
+    if not (len(a) == 1 and len(b) == 1):
+        return '!!!error!!!'
+    index_a = numbers.index(a)
+    index_b = numbers.index(b)
+    index_c = index_a + index_b
+    out = ''
+    if index_c >= len(numbers):
+        out += '1' #carry
+        index_c = index_c - len(numbers)
+    out += numbers[index_c]
+    return out
 
 
 def getRandom():
