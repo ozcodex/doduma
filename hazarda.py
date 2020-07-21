@@ -17,36 +17,69 @@ names = {
         'E':'elv'
         }
 
-def getPows(digits):
-    pows = ['','dod ', 'groc ', 'taŭs ', 'dod ', 'groc '][:digits]
-    pows.reverse()
-    return pows
+pows = ['dod','groc','taŭs']
 
+def d3toText(number):
+    print("converting",number)
+    #create text string for 3 digit number
+    if not len(number) == 3:
+        return "!!!error!!!"
+    grocoj = number[0]
+    dodoj = number[1] 
+    unuoj = number [2]
+    name = ''
+    if not (grocoj == '0'):
+        if not (grocoj == '1'):
+            name += names[grocoj]
+        name += pows[1] + ' '
+    if not (dodoj == '0'):
+        if not (dodoj == '1'):
+            name += names[dodoj]
+        name += pows[0] + ' '
+    if not (unuoj == '0'):
+        name += names[unuoj]
+    return name
+
+def addZero(number):
+    #add zeroes at begining to complete digits in order of 3
+    mod = len(number)%3
+    if mod == 0:
+        return number
+    out = '0' * (3 - mod)
+    out += number
+    return out
+
+def splitIn3(number):
+    n = 3
+    lst = list(addZero(number))
+    lst = [lst[i:i + n] for i in range(0, len(lst), n)]
+    out = []
+    for i in lst:
+        out.append("".join(i))
+    return out
 
 def toText(number):
-    parts = list(number)
-    digits =len(parts)
-    pows = getPows(digits)
-    name = ''
-    #process first digit
-    dig = parts.pop(0)
-    if not (dig == '1' and digits > 1):
-        name += names[dig]
-    if digits > 1:
-        name += pows.pop(0)
-    for dig in parts:
-        p = pows.pop(0)
-        #if is 0 or 1 skip it
-        if not (dig == '0' or dig == '1'):
-            name += names[dig]+p
-        elif p == 'taŭs ' or (dig == '1' and not p == ''):
-            name += p
-            
-    return name
+    digits =len(number)
+    #check if the number is nul
+    if number == '0' * digits:
+        return 'nul'
+    parts = splitIn3(number)
+    pw = len(parts) - 1 #pow
+    text = ''
+    for part in parts:
+        text += d3toText(part)
+        if pw > 0:
+            text += " " + pows[2]
+            if pw > 1:
+                text += '-je-' + names[str(pw)]
+            text += " "
+        pw -= 1
+    return text
+
 
 def getRandom():
     #random num generation
-    max_digits = 6
+    max_digits = 12
     digits = randrange(max_digits) + 1
     # choose a first digit different from 0
     dig = choice(numbers[-11:])
@@ -57,7 +90,11 @@ def getRandom():
         result += dig
     return result
 
-num = getRandom()
-name = toText(num) 
-print ("number: ", num)
-print ("text: ", name)
+
+for i in range(5):
+    num = getRandom()
+    name = toText(num) 
+    print ("number: ", num)
+    print ("text: ", name)
+
+
